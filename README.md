@@ -1,112 +1,184 @@
-# PlayStation Direct Stock Checker Bot for Astro Bot Contoller (German Website)
+Certainly! Below is an enhanced README that combines the strengths and additional features from both versions, providing a comprehensive guide for users who want to use and customize the PlayStation Astro Bot Controller Stock Checker Bot.
 
-This repository contains a customizable Python bot that checks the stock status of the Astro Bot limited edition DualSense wireless controller on the German PlayStation Direct store. The bot will notify you via Telegram and WhatsApp when the product is in stock, providing you with a real-time alert. This bot is designed to be used by developers who want to monitor stock levels for personal use or share the functionality with others.
+---
+
+# PlayStation Astro Bot Controller Stock Checker Bot
+
+This repository contains a Python bot designed to monitor the stock status of the Astro Bot limited edition DualSense wireless controller on the German PlayStation Direct store. The bot sends notifications via Telegram and WhatsApp using the CallMeBot service. It also includes a Flask server to provide a real-time dashboard for monitoring the bot's status.
 
 ## Features
 
-- **Stock Checking**: Monitors the German PlayStation Direct store for the availability of the Astro Bot limited edition DualSense wireless controller.
-- **Real-time Alerts**: Sends notifications via Telegram and WhatsApp when the product is in stock.
-- **Status Updates**: Sends periodic status updates every hour to keep you informed about the bot's performance.
-- **Web Dashboard**: Provides a simple web interface to monitor the bot's metrics like API call count, errors, and last response time.
-- **Customizable Settings**: Adjust the API endpoints, check intervals, and notification settings to suit your needs.
+- **Automated Stock Monitoring**: Periodically checks the stock status of the specified PlayStation product (Astro Bot limited edition DualSense wireless controller).
+- **Multi-Platform Notifications**: Sends notifications via Telegram and WhatsApp when:
+  - The bot starts monitoring.
+  - The product becomes available (in stock).
+  - Errors occur during API calls.
+  - Regular status updates are sent every hour to keep the user informed.
+- **Web Dashboard**: A simple web-based dashboard to track metrics such as API response times, the number of API calls made, and any failures.
+- **Customizable Settings**: Allows users to adjust check intervals, notification intervals, and other settings according to their needs.
+- **Error Handling**: Logs errors and sends notifications when API calls fail, ensuring the user is always informed.
 
-## Prerequisites
+## Requirements
 
-1. **Python**: Ensure you have Python 3.8 or higher installed on your machine. You can download Python from the [official website](https://www.python.org/downloads/).
-
-2. **Telegram Bot**: You need a Telegram bot token to send messages. You can create a Telegram bot by talking to [BotFather](https://t.me/botfather) on Telegram.
-   
-3. **WhatsApp CallMeBot API**: To send WhatsApp messages, you'll need to set up an API with CallMeBot. Follow the instructions on the [CallMeBot website](https://www.callmebot.com/blog/free-api-whatsapp-messages/) to get your API key and phone number.
+- **Python 3.7+**: Ensure you have Python installed. Download the latest version [here](https://www.python.org/downloads/).
+- **Telegram Bot API Key**: Create a Telegram bot using [BotFather](https://t.me/botfather) and obtain your bot token.
+- **WhatsApp API Key from CallMeBot**: Follow instructions on the [CallMeBot website](https://www.callmebot.com/blog/free-api-whatsapp-messages/) to get your API key and register your phone number.
+- **Basic understanding of Python and API usage**.
 
 ## Installation
 
-1. Clone this repository to your local machine:
+### 1. Clone the Repository
 
-    ```bash
-    git clone https://github.com/yourusername/playstation-stock-checker.git
-    cd playstation-stock-checker
-    ```
+```bash
+git clone https://github.com/yourusername/playstation-stock-checker.git
+cd playstation-stock-checker
+```
 
-2. Install the required Python packages:
+### 2. Install Dependencies
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+Install the required Python packages using pip:
 
-3. Edit the `settings` dictionary in `stock_checker.py` with your personal API keys and phone numbers:
+```bash
+pip install -r requirements.txt
+```
 
-    ```python
-    settings = {
-        'API_URL': "https://api.direct.playstation.com/commercewebservices/ps-direct-de/users/anonymous/products/productList?fields=BASIC&lang=de_DE&productCodes=1000044988-DE",
-        'TELEGRAM_BOT_TOKEN': "YOUR_TELEGRAM_BOT_TOKEN",
-        'TELEGRAM_CHAT_ID': "YOUR_TELEGRAM_CHAT_ID",
-        'WHATSAPP_PHONE': "YOUR_WHATSAPP_PHONE",
-        'WHATSAPP_APIKEY': "YOUR_WHATSAPP_APIKEY",
-        'CHECK_INTERVAL': 60,  # Time between each stock check in seconds
-        'STATUS_INTERVAL': 3600,  # Time between status updates in seconds
-    }
-    ```
+### 3. Configure the Bot
 
-4. Start the bot by running the script:
+Edit the `settings` dictionary in the `main.py` file to include your API URL, Telegram Bot Token, Telegram Chat ID, WhatsApp phone number, and WhatsApp API key:
 
-    ```bash
-    python stock_checker.py
-    ```
+```python
+settings = {
+    'API_URL': "https://api.direct.playstation.com/commercewebservices/ps-direct-de/users/anonymous/products/productList?fields=BASIC&lang=de_DE&productCodes=1000044988-DE",
+    'TELEGRAM_BOT_TOKEN': "YOUR_TELEGRAM_BOT_TOKEN",
+    'TELEGRAM_CHAT_ID': "YOUR_TELEGRAM_CHAT_ID",
+    'WHATSAPP_PHONE': "YOUR_WHATSAPP_PHONE",
+    'WHATSAPP_APIKEY': "YOUR_WHATSAPP_APIKEY",
+    'CHECK_INTERVAL': 60,  # Time between each stock check in seconds
+    'STATUS_INTERVAL': 3600,  # Time between status updates in seconds
+}
+```
 
-## Usage
+### 4. Set Up Telegram Bot
 
-- **Telegram Bot Setup**:
-  - Create a bot using [BotFather](https://t.me/botfather) on Telegram.
-  - Obtain your bot token and chat ID. The chat ID is where the bot will send messages. You can obtain the chat ID by sending a message to your bot and then accessing `https://api.telegram.org/bot<YourBotToken>/getUpdates`.
+1. Create a Telegram bot by talking to [BotFather](https://t.me/botfather).
+2. Copy the Bot Token provided by BotFather and paste it into the `TELEGRAM_BOT_TOKEN` field.
+3. To get your `TELEGRAM_CHAT_ID`, send a message to your bot and then visit `https://api.telegram.org/bot<YourBotToken>/getUpdates`. Look for the chat section in the response to find your Chat ID.
 
-- **WhatsApp CallMeBot Setup**:
-  - Follow the instructions on [CallMeBot's WhatsApp API page](https://www.callmebot.com/blog/free-api-whatsapp-messages/) to get your API key.
-  - Use the API key and phone number in the `settings` dictionary.
+### 5. Set Up WhatsApp with CallMeBot
 
-- **Bot Operations**:
-  - The bot checks the stock status every 60 seconds (configurable).
-  - If the product is in stock, it sends an instant alert via Telegram and WhatsApp.
-  - The bot provides a status update every hour, informing you of its operational status, API response times, and any errors encountered.
+1. Go to the [CallMeBot WhatsApp API page](https://www.callmebot.com/blog/free-api-whatsapp-messages/).
+2. Follow the instructions to register your phone number with CallMeBot.
+3. Use the API key provided by CallMeBot in the `WHATSAPP_APIKEY` field.
 
-- **Web Dashboard**:
-  - The bot runs a small Flask server accessible on `http://localhost:5000` (or `http://<your-ip>:5000` if running on a server).
-  - The dashboard provides a live overview of API calls, errors, last stock check, and more.
+### 6. Run the Bot
 
-## Customization
+To start the bot, run the following command:
 
-- **Changing the Product**:
-  - The bot is currently configured to monitor the Astro Bot limited edition DualSense controller. To monitor a different product, change the `productCodes` parameter in the `API_URL` setting.
+```bash
+python main.py
+```
 
-- **Adjusting Check and Status Intervals**:
-  - Modify the `CHECK_INTERVAL` and `STATUS_INTERVAL` values in the `settings` dictionary to change how frequently the bot checks for stock and sends status updates.
+### 7. Access the Dashboard
 
-- **Additional Features**:
-  - The bot can be extended to support additional notification platforms or track multiple products. Advanced users can add new features by modifying the provided codebase.
+Once the bot is running, monitor its activity by opening your web browser and navigating to `http://localhost:5000`. The dashboard will display the number of API calls made, any errors encountered, and other useful metrics.
 
-## Troubleshooting
+## Flask Dashboard Overview
 
-- **Bot Not Sending Messages**:
-  - Ensure that your Telegram bot token and chat ID are correct.
-  - Verify that your WhatsApp API key and phone number are correctly configured.
-  - Check the logs for any error messages related to network issues or incorrect configurations.
+The Flask dashboard provides a real-time view of the bot’s operations:
 
-- **Web Dashboard Not Loading**:
-  - Make sure Flask is installed correctly (`pip install Flask`).
-  - Verify that the server is running by checking the terminal output for any errors.
-  - Ensure that the port (5000 by default) is not being used by another application.
+- **API Calls**: Total number of successful API requests made by the bot since it started.
+- **Errors**: Number of API request failures (e.g., network issues, API problems).
+- **Last Response**: Time (in seconds) taken by the last API response, which helps in understanding the API's performance.
+- **Last In Stock**: Last time the product was found to be in stock. If the product has never been in stock since the bot started, this will show "N/A."
+- **Check Interval**: Frequency (in seconds) at which the bot checks the product's stock status, as set by the `CHECK_INTERVAL`.
+- **Status Interval**: Interval (in seconds) at which the bot sends status updates to Telegram and WhatsApp, as defined by the `STATUS_INTERVAL`.
 
-## Contributing
+## Bot Behavior on Startup and Shutdown
 
-Contributions are welcome! If you have any ideas for new features, improvements, or bug fixes, feel free to fork the repository and submit a pull request.
+### Startup Behavior
 
-## License
+- **Notifications**: When the bot starts, it immediately sends a notification to both Telegram and WhatsApp to inform you that it has begun monitoring the product.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+  Example Notification:
+  ```
+  Stock checker bot started and monitoring the product.
+  ```
 
-## Acknowledgments
+### Shutdown Considerations
 
-- [Python Telegram Bot](https://python-telegram-bot.org/)
-- [CallMeBot](https://www.callmebot.com/) for the WhatsApp messaging API
-- Flask for providing the web dashboard framework
+- **Manual Shutdown**: If you stop the bot (e.g., by pressing Ctrl+C), it does not send a shutdown notification. You may want to notify yourself manually if stopping the bot for an extended period.
+- **Restarting**: If the bot restarts, it sends a startup notification to confirm that it is running.
 
-This bot provides a simple and effective way to monitor product availability and is perfect for anyone looking to ensure they never miss out on the limited-edition controller again!
+## How It Works
+
+### Stock Checks
+
+- The bot checks the PlayStation product's stock status every 60 seconds by default. This interval is defined by the `CHECK_INTERVAL` setting.
+- If the product is in stock, the bot sends an instant notification to both Telegram and WhatsApp.
+- The bot also sends a notification when it starts monitoring the product.
+
+### Status Updates
+
+- The bot sends a status update every hour (3600 seconds by default), summarizing its activity, including API calls made, errors encountered, and the last recorded API response time.
+- This interval can be adjusted using the `STATUS_INTERVAL` setting.
+
+### Error Handling
+
+- If an error occurs during an API call (e.g., network issues), the bot logs the error and sends a notification to both Telegram and WhatsApp. The bot will continue to operate and attempt the next scheduled check.
+
+## Modifying Timings
+
+The bot's checking and notification intervals are controlled by:
+
+- **CHECK_INTERVAL**: How often (in seconds) the bot checks the PlayStation product's stock status. For example, setting `CHECK_INTERVAL` to 60 means the bot checks every minute.
+- **STATUS_INTERVAL**: How often (in seconds) the bot sends a status update to Telegram and WhatsApp. For example, setting `STATUS_INTERVAL` to 3600 means the bot sends an update every hour.
+
+To change these timings:
+
+1. Open the `main.py` file.
+2. Modify the values of `CHECK_INTERVAL` and `STATUS_INTERVAL` as desired.
+3. Save the file and restart the bot.
+
+### Example
+
+If you want the bot to check the stock every 30 seconds and send a status update every 2 hours, set:
+
+```python
+settings = {
+    'CHECK_INTERVAL': 30,
+    'STATUS_INTERVAL': 7200,
+}
+```
+
+## Security Considerations
+
+To protect your sensitive data, it is recommended to use environment variables for storing API keys, chat IDs, and phone numbers. This prevents accidentally sharing these details if the code is shared or pushed to a public repository.
+
+### Example
+
+You can set up environment variables in your operating system or by using a `.env` file with the following structure:
+
+```env
+TELEGRAM_BOT_TOKEN=your_bot_token
+TELEGRAM_CHAT_ID=your_chat_id
+WHATSAPP_PHONE=your_whatsapp_number
+WHATSAPP_APIKEY=your_api_key
+```
+
+Modify your script to read from these environment variables:
+
+```python
+import os
+
+settings = {
+    'API_URL': os.getenv('API_URL', "default_url"),
+    'TELEGRAM_BOT_TOKEN': os.getenv('TELEGRAM_BOT_TOKEN', "default_token"),
+    'TELEGRAM_CHAT_ID': os.getenv('TELEGRAM_CHAT_ID', "default_chat_id"),
+    'WHATSAPP_PHONE': os.getenv('WHATSAPP_PHONE', "default_phone"),
+    'WHATSAPP_APIKEY': os.getenv('WHATSAPP_APIKEY', "default_apikey"),
+    'CHECK_INTERVAL': int(os.getenv('CHECK_INTERVAL', 60)),
+    'STATUS_INTERVAL': int(os.getenv('STATUS_INTERVAL', 3600)),
+}
+```
+
+
